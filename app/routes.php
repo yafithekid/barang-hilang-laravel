@@ -11,12 +11,9 @@
 |
 */
 
-Route::group(['prefix'=>'/'], function()
-{
-	Route::get('register',['uses' => 'HomeController@getRegister']);
-	Route::post('register',['uses' => 'HomeController@postRegister']);
-	Route::get('home',['uses' => 'HomeController@getHome']);
-	Route::post('login',['uses' => 'HomeController@postLogin']);
-
-});
-Route::get('home',['uses' => 'HomeController@showWelcome']);
+Route::get('/register',['uses' => 'HomeController@getRegister']);
+Route::post('/register',['uses' => 'HomeController@postRegister']);
+Route::post('/login',['uses' => 'HomeController@postLogin']);
+Route::get('/logout',['uses' => 'HomeController@getLogout']);
+Route::get('/',['uses'=>'HomeController@getHome']);
+//Route::get('home',['uses' => 'HomeController@showWelcome']);

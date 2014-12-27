@@ -17,8 +17,7 @@ class HomeController extends BaseController {
 
 	public function getHome()
 	{
-		//return __NAMESPACE__;
-		return View::make('hello');
+		return View::make('home.index');
 	}
 
 	//show the register home page
@@ -28,11 +27,13 @@ class HomeController extends BaseController {
 	}
 
 	/**
-	 * Do the validation and data saving, redirect to show register when fail.
+	 * Do the validation and data saving
+	 * if success redirect to show register when fail.
+	 * if fail, redirect back with errors
 	 */
 	public function postRegister()
 	{
-		$validation = Validator::make(Input::all(), User::$rules);
+		$validation = Validator::make(Input::all(),User::$rules);
 		if ($validation->fails()){
 			return Redirect::back()->withInput(Input::except('password','repeat_password'))->withErrors($validation);
 		} else {
@@ -45,15 +46,32 @@ class HomeController extends BaseController {
 		}
 	}
 
+	/**
+	 * Check whether the username and password found in database.
+	 * if fail, add error username/password invalid
+	 * if success, redirect to home
+	 */
 	public function postLogin()
 	{
 		$username = Input::get('username');
 		$password = sha1(Input::get('password'));
-		if (User::where('username','=',$username)->andWhere('password','=',$password)->get() !== null){
-			Auth::login($username,true);
+		$user = User::where('username','=',$username)->where('password','=',$password)->first();
+		var_dump($user);
+		if ($user !== null){
+			Auth::login($user,Input::get('remember_me', false));
+			return Redirect::action('HomeController@getHome');
 		} else {
-			return Redirect::back();
+			Session::flash('login_error','Invalid username/password');
+			return Redirect::back()->withInput(Input::except('password'));
 		}
 	}
 
+	/**
+	 * logout the user and redirect to home
+	 */
+	public function getLogout()
+	{
+		Auth::logout();
+		return Redirect::home();
+	}
 }
