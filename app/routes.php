@@ -11,6 +11,12 @@
 |
 */
 
+Route::group(['prefix' => '/lost-item'],function(){
+	Route::get('/create',['uses' =>'LostItemController@getCreate']);
+	Route::post('/create',['uses' => 'LostItemController@postCreate']);
+	Route::any('/index',['uses' => 'LostItemController@getIndex']);
+});
+
 Route::get('/register',['uses' => 'HomeController@getRegister']);
 Route::post('/register',['uses' => 'HomeController@postRegister']);
 Route::post('/login',['uses' => 'HomeController@postLogin']);
