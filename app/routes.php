@@ -15,6 +15,7 @@ Route::group(['prefix' => '/lost-item'],function(){
 	Route::get('/create',['uses' =>'LostItemController@getCreate']);
 	Route::post('/create',['uses' => 'LostItemController@postCreate']);
 	Route::any('/index',['uses' => 'LostItemController@getIndex']);
+	Route::any('/search',['uses' => 'LostItemController@getSearch']);
 });
 
 Route::get('/register',['uses' => 'HomeController@getRegister']);

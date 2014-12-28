@@ -1,0 +1,7 @@
+header {
+	background: #3c8dbc;
+}
+
+body > .header .navbar {
+	margin-left: 0px;
+}
