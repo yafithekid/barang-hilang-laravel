@@ -34,6 +34,7 @@ class HomeController extends BaseController {
 	public function postRegister()
 	{
 		$validation = Validator::make(Input::all(),User::$rules);
+		var_dump(Input::all());
 		if ($validation->fails()){
 			return Redirect::back()->withInput(Input::except('password','repeat_password'))->withErrors($validation);
 		} else {
@@ -42,6 +43,7 @@ class HomeController extends BaseController {
 			$user->password = sha1(Input::get('password'));
 			$user->fullname = Input::get('fullname');
 			$user->save();
+			Session::flash('global-success','Registerasi berhasil. Silakan login dengan username dan password anda');
 			return Redirect::action('HomeController@getHome');
 		}
 	}
@@ -56,7 +58,6 @@ class HomeController extends BaseController {
 		$username = Input::get('username');
 		$password = sha1(Input::get('password'));
 		$user = User::where('username','=',$username)->where('password','=',$password)->first();
-		var_dump($user);
 		if ($user !== null){
 			Auth::login($user,Input::get('remember_me', false));
 			return Redirect::action('HomeController@getHome');

@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('content')
+@section('main-content')
 <div class='box box-success'>
 
     <div class="box-header">
@@ -33,6 +33,12 @@
             <label for='fullname'>Nama Lengkap</label>
             <input type='text' name='fullname' value='<?=Input::old('fullname');?>' class='form-control'>
             <?= $errors->first('fullname'); ?>
+        </div>
+
+        <div class='form-group @if($errors->has("email")) has-error @endif'>
+            <label for='email'>Email</label>
+            <input type='text' name='email' value='<?=Input::old('email');?>' class='form-control'>
+            <?= $errors->first('email'); ?>
         </div>
         
     </div>

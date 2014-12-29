@@ -12,7 +12,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'username' => 'required|unique:user',
 		'password' => 'required',
 		'fullname' => 'required',
-		'repeat_password' => 'same:password | required'
+		'email' => 'required|email',
+		'repeat_password' => 'same:password|required'
 	];
 
 	use UserTrait, RemindableTrait;

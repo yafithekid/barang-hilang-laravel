@@ -11,11 +11,15 @@
 |
 */
 
-Route::group(['prefix' => '/lost-item'],function(){
-	Route::get('/create',['uses' =>'LostItemController@getCreate']);
-	Route::post('/create',['uses' => 'LostItemController@postCreate']);
-	Route::any('/index',['uses' => 'LostItemController@getIndex']);
-	Route::any('/search',['uses' => 'LostItemController@getSearch']);
+Route::pattern('id','[0-9]+');
+
+Route::group(['prefix' => '/item'],function(){
+	Route::get('/create',['uses' =>'ItemController@getCreate']);
+	Route::post('/create',['uses' => 'ItemController@postCreate']);
+	Route::any('/index',['uses' => 'ItemController@getIndex']);
+	Route::any('/search',['uses' => 'ItemController@getSearch']);
+	Route::any('/{id}/view',['uses' => 'ItemController@anyView']);
+	Route::post('/{id}/add-comment',['uses' => 'ItemController@postComment']);
 });
 
 Route::get('/register',['uses' => 'HomeController@getRegister']);

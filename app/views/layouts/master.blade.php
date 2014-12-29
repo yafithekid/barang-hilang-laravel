@@ -7,6 +7,7 @@
         <?= HTML::style('css/bootstrap/bootstrap.min.css'); ?>
         <?= HTML::style('css/adminLTE/AdminLTE.css'); ?>
         <?= HTML::style('css/main.css');?>
+        <?= HTML::style('css/font-awesome/css/font-awesome.min.css'); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,20 +28,22 @@
                     </div>
                     <div class='col-xs-8'>
                         <div class='col-xs-12' >
-                            <form action='<?=URL::action('LostItemController@getIndex');?>' method='GET' role="search" >                             
+                            <form action='<?=URL::action('ItemController@getIndex');?>' method='GET' role="search" >                             
                             <div class='col-xs-9' style='padding-right:0px;'>
                                 <div class="form-group" style='margin: 5px; 0px;' >
                                     <input type="text" class="form-control" placeholder="Cari barang anda di sini...">
                                 </div>
                             </div>
                             <div class='col-xs-3' style='padding-left:0px;' >
-                                <button type="submit" class="btn btn-default" style='margin: 5px; 0px;'>CARI</button>
+                                <button type="submit" class="btn btn-default" style='margin: 5px; 0px;'><i class='fa fa-search'></i></button>
                             </div>
                             </form>
                         </div>    
                     </div>
                     <div class='col-xs-2'>
-                        <a href='#' class='btn btn-warning' style='margin: 5px; 0px;' >LAPOR TEMUAN BARANG</a>
+                        <a href='<?=URL::action('ItemController@getCreate');?>' class='btn btn-warning' style='margin: 5px; 0px;'>
+                            <i class='fa fa-bullhorn'></i> Lapor Barang
+                        </a>
                     </div>
 
                 </div>
@@ -58,11 +61,11 @@
                             <span style='color:#f56954;'><?=Session::get('login_error','');?></span> 
                             <div class='form-group'>
                                 <label for='username'>Username</label>
-                                <input type='text' value='<?=Input::old('username');?>' class='form-control'/>
+                                <input type='text' name='username' value='<?=Input::old('username');?>' class='form-control'/>
                             </div>
                             <div class='form-group'>
                                 <label for='password'>Password</label>
-                                <input type='text' value='<?=Input::old('password');?>' class='form-control'/>
+                                <input type='password' name='password' value='<?=Input::old('password');?>' class='form-control'/>
                             </div>
                             <div class='form-group'>
                                 <center><input type='submit' value='login' class='btn btn-warning' /></center>
@@ -79,8 +82,8 @@
                     <br>
                         <h4>Barang per kategori</h4>
                         <ul class='sidebar-menu'>
-                            @foreach(ItemCategory::all() as $item)
-                                <li><a href='<?=URL::action('LostItemController@getSearch',['category'=>$item->id]);?>'><?=$item->name;?></a></li>
+                            @foreach(Category::all() as $item)
+                                <li><a href='<?=URL::action('ItemController@getSearch',['category'=>$item->id]);?>'><?=$item->name;?></a></li>
                             @endforeach
                         </ul>
                     @show
@@ -88,12 +91,12 @@
                 </div>
 
                 <div class='col-xs-9 right-side' style='background: #f9f9f9; margin-left:0px;'>
-                    <section class='content-header'>
-                        @yield('content-header')
-                    </section>
-                    <section class='content'>
-                        @yield('content')
-                    </section>
+                    @if (Session::has('global-success'))
+                        <div class='alert alert-success'>
+                            <?= Session::get('global-success'); ?>
+                        </div>
+                    @endif
+                    @yield('main-content')
                 </div>
 
                 @section('script')
