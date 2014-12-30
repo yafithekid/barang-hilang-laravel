@@ -1,7 +1,23 @@
 header {
 	background: #3c8dbc;
 }
-
+html, body {
+	background: #ffffff;
+}
 body > .header .navbar {
 	margin-left: 0px;
+}
+
+.left-side {
+	padding: 0px;
+}
+.right-side {
+	padding: 0px;
+	margin-left: 0px;
+}
+.content {
+	background: #FBFBFB;
+}
+.right-side > .content-header {
+	font-size: 24px;
 }

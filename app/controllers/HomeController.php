@@ -15,11 +15,6 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function getHome()
-	{
-		return View::make('home.index');
-	}
-
 	//show the register home page
 	public function getRegister()
 	{
@@ -48,6 +43,11 @@ class HomeController extends BaseController {
 		}
 	}
 
+	public function getLogin()
+	{
+		return View::make('home.login');
+	}
+
 	/**
 	 * Check whether the username and password found in database.
 	 * if fail, add error username/password invalid
@@ -60,7 +60,7 @@ class HomeController extends BaseController {
 		$user = User::where('username','=',$username)->where('password','=',$password)->first();
 		if ($user !== null){
 			Auth::login($user,Input::get('remember_me', false));
-			return Redirect::action('HomeController@getHome');
+			return Redirect::action('ItemController@anyIndex');
 		} else {
 			Session::flash('login_error','Invalid username/password');
 			return Redirect::back()->withInput(Input::except('password'));
@@ -73,6 +73,6 @@ class HomeController extends BaseController {
 	public function getLogout()
 	{
 		Auth::logout();
-		return Redirect::action('HomeController@getHome');
+		return Redirect::route('home');
 	}
 }

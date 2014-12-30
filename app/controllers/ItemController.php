@@ -2,19 +2,41 @@
 
 class ItemController extends \BaseController {
 	
-	public function getIndex(){
-		return View::make('item.index');
+	/**
+	 * just for say hello
+	 */
+	public function anyIndex(){
+		$lost_items = Item::where('type','=',Item::LOST)->paginate(12);
+		$found_items = Item::where('type','=',Item::FOUND)->paginate(12);
+		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
+	}
+	/**
+	 * paginate item based on category
+	 * only to show items
+	 * @var $category_id id of category
+	 */
+	public function anyCategory($category_id){
+		$lost_items = Item::where('category_id','=',$category_id)->where('type','=',Item::LOST)->paginate(1);
+		$found_items = Item::where('category_id','=', $category_id)->where('type','=',Item::FOUND)->paginate(1);
+		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 
-	public function getSearch($q)
+	/**
+	 * search any item with the given query string
+	 * @var $q query string
+	 */
+	public function anySearch()
 	{
-		return View::make('item.index');
+		$q = Input::get('q');
+		$lost_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::LOST)->paginate(12);
+		$found_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::FOUND)->paginate(12);
+		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 
 	public function getCreate(){
 		$lost_item = new Item();
-		$lost_item->lost_lat = Item::DEFAULT_LAT;
-		$lost_item->lost_lng = Item::DEFAULT_LNG;
+		$lost_item->lat = Item::DEFAULT_LAT;
+		$lost_item->lng = Item::DEFAULT_LNG;
 		View::share('lost_item', $lost_item);
 		View::share('item_categories', Category::all());
 		return View::make('item.create');
@@ -25,10 +47,16 @@ class ItemController extends \BaseController {
 		if ($validation->fails()){
 			return Redirect::back()->withInput()->withErrors($validation);
 		} else {
-			$lost_item = new Item(Input::all());
-			$lost_item->save();
+			$item = new Item(Input::all());		
+			$item->save();
+			if (Input::hasFile('image')){
+				$image = Input::file('image');
+				var_dump($image);
+				$extension = $image->getClientOriginalExtension();
+				$image->move(Item::imagePath(),"$item->id.".$extension);
+			}	
 			Session::flash('global-success','Barang berhasil ditambahkan');
-			return Redirect::action('ItemController@getIndex');
+			return Redirect::action('ItemController@anyIndex');
 		}
 	}
 

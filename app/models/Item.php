@@ -8,9 +8,11 @@ class Item extends \Eloquent {
 	const LOST = 'lost';
 	const FOUND = 'found';
 
+	public static function imagePath() { return public_path().'/uploads/item'; }
+
 	public $image;
 
-	protected $fillable = ['name','owner','lost_lat','lost_lng','contact_person','category_id','description','location'];
+	protected $fillable = ['name','owner','lat','lng','contact_person','category_id','description','location'];
 	protected $table = 'item';
 
 	public static $rules = [

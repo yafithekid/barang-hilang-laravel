@@ -12,19 +12,34 @@
 */
 
 Route::pattern('id','[0-9]+');
+Route::filter('auth.login', function(){
+	if (Auth::guest()){
+		Session::flash('global-error','Anda harus login terlebih dahulu');
+		return Redirect::route('login');
+	}
+});
 
 Route::group(['prefix' => '/item'],function(){
-	Route::get('/create',['uses' =>'ItemController@getCreate']);
-	Route::post('/create',['uses' => 'ItemController@postCreate']);
-	Route::any('/index',['uses' => 'ItemController@getIndex']);
-	Route::any('/search',['uses' => 'ItemController@getSearch']);
+	Route::group(['before' => 'auth.login'], function(){
+		Route::get('/create',['uses' =>'ItemController@getCreate']);
+		Route::post('/create',['uses' => 'ItemController@postCreate']);
+		Route::post('/{id}/add-comment',['uses' => 'ItemController@postComment']);
+	});
+	
+	Route::any('/index',['uses' => 'ItemController@anyIndex']);
+	
+	Route::any('/search',['uses' => 'ItemController@anySearch']);
+	Route::any('/category/{id}-{name}',['uses' => 'ItemController@anyCategory']);
+
 	Route::any('/{id}/view',['uses' => 'ItemController@anyView']);
-	Route::post('/{id}/add-comment',['uses' => 'ItemController@postComment']);
+	
 });
 
 Route::get('/register',['uses' => 'HomeController@getRegister']);
 Route::post('/register',['uses' => 'HomeController@postRegister']);
-Route::post('/login',['uses' => 'HomeController@postLogin']);
+Route::post('/login',['as'=>'login','uses' => 'HomeController@postLogin']);
+Route::get('/login', ['uses' => 'HomeController@getLogin']);
+
 Route::get('/logout',['uses' => 'HomeController@getLogout']);
-Route::get('/',['uses'=>'HomeController@getHome']);
+Route::get('/',['as'=>'home','uses'=>'ItemController@anyIndex']);
 //Route::get('home',['uses' => 'HomeController@showWelcome']);

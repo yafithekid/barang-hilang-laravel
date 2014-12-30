@@ -17,7 +17,7 @@
   </div>
 
   <div class='form-group @if($errors->has("owner")) has-error @endif'>
-      <label for='owner'>Nama Pemilik</label>
+      <label for='owner'>Nama Pemilik/Penemu</label>
       <input type='text' name='owner' value='<?=Input::old('owner');?>' class='form-control'>
       <span style='color:#f56954'><?= $errors->first('owner'); ?></span>
   </div>
@@ -56,14 +56,20 @@
       <textarea name='description' class='form-control'><?=Input::old('description');?></textarea>
       <span style='color:#f56954'><?= $errors->first('description'); ?></span>
   </div>
+
+  <div class='form-group @if($errors->has("image")) has-error @endif'>
+    <label for='image'>Gambar</label>
+    <input type='file' name='image' class='form-control' value='<?=Input::old("image");?>' />
+    <span style='color:#f56954'><?= $errors->first('image'); ?></span>
+  </div>
 @stop
 
 @section('script')
 @parent
 <script src='https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyC3h2wqa3ND0xEO6RiJJgirIgoX-w3Ckd0'></script>
 <script type="text/javascript">
-  var lat = <?=$lost_item->lost_lat;?>;
-  var lng = <?=$lost_item->lost_lng;?>;
+  var lat = <?=$lost_item->lat;?>;
+  var lng = <?=$lost_item->lng;?>;
   var mapOptions = {
           center: new google.maps.LatLng(lat,lng),
           zoom: 15
