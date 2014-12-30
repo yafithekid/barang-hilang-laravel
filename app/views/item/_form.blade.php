@@ -2,6 +2,7 @@
 
 @section('main-content')
   <?= Form::token(); ?>
+  <input type='hidden' name='user_id' value='{{Auth::user()->id;}}'/>
   <div class='form-group @if($errors->has("name")) has-error @endif'>
       <label for='name'>Nama Barang</label>
       <input type='text' name='name' value='<?=Input::old('name');?>' class='form-control'>
@@ -41,14 +42,14 @@
       <input type='hidden' name='lng' value='<?=Input::old('lng',Item::DEFAULT_LNG);?>' class='form-control' id='lost-lng'/>
   </div>
 
-  <div class='form-group @if($errors->has("item_category_id")) has-error @endif'>
+  <div class='form-group @if($errors->has("category_id")) has-error @endif'>
       <label for='category_id'>Jenis Barang</label>
-      <select name='category_id' value='<?=Input::old('item_category_id');?>' class='form-control'>
+      <select name='category_id' value='<?=Input::old('category_id');?>' class='form-control'>
           <?php foreach ($item_categories as $item_category): ?>
               <option value='<?=$item_category->id;?>'><?=$item_category->name;?></option>
           <?php endforeach; ?>
       </select>
-      <span style='color:#f56954'><?= $errors->first('item_category_id'); ?></span>
+      <span style='color:#f56954'><?= $errors->first('category_id'); ?></span>
   </div>
 
   <div class='form-group @if($errors->has("description")) has-error @endif'>

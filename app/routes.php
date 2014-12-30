@@ -35,7 +35,7 @@ Route::group(['prefix' => '/item'],function(){
 	
 });
 
-Route::get('/register',['uses' => 'HomeController@getRegister']);
+Route::get('/register',['as'=>'register','uses' => 'HomeController@getRegister']);
 Route::post('/register',['uses' => 'HomeController@postRegister']);
 Route::post('/login',['as'=>'login','uses' => 'HomeController@postLogin']);
 Route::get('/login', ['uses' => 'HomeController@getLogin']);

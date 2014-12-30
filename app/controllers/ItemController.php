@@ -51,9 +51,10 @@ class ItemController extends \BaseController {
 			$item->save();
 			if (Input::hasFile('image')){
 				$image = Input::file('image');
-				var_dump($image);
 				$extension = $image->getClientOriginalExtension();
 				$image->move(Item::imagePath(),"$item->id.".$extension);
+				$item->image_filename = "$item->id.$extension";
+				$item->save();
 			}	
 			Session::flash('global-success','Barang berhasil ditambahkan');
 			return Redirect::action('ItemController@anyIndex');

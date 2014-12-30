@@ -29,17 +29,21 @@ class HomeController extends BaseController {
 	public function postRegister()
 	{
 		$validation = Validator::make(Input::all(),User::$rules);
-		var_dump(Input::all());
 		if ($validation->fails()){
-			return Redirect::back()->withInput(Input::except('password','repeat_password'))->withErrors($validation);
+			return Redirect::back()->withInput(Input::except('password','repeat_password','image'))->withErrors($validation);
 		} else {
-			$user = new User;
-			$user->username = Input::get('username');
-			$user->password = sha1(Input::get('password'));
-			$user->fullname = Input::get('fullname');
+			$user = new User(Input::all());
+			$user->password = sha1($user->password);
 			$user->save();
+			if (Input::hasFile('image')){
+				$image = Input::file('image');
+				$extension = $image->getClientOriginalExtension();
+				$image->move(User::imagePath(),"$user->id.".$extension);
+				$user->image_filename = "$user->id.$extension";
+				$user->save();
+			}
 			Session::flash('global-success','Registerasi berhasil. Silakan login dengan username dan password anda');
-			return Redirect::action('HomeController@getHome');
+			return Redirect::route('home');
 		}
 	}
 

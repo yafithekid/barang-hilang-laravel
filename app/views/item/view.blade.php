@@ -5,7 +5,9 @@
 </section>
 <section class='content'>
 	<h4>Dilaporkan pada <?=$item->created_at;?> </h4>
-	<dl class='dl-horizontal' style='font-size:18px;'>
+    <img src='{{$item->getImageUrl()}}' max-width='100px' max-height='100px' />
+    <br/><br/>
+	<dl class='dl-horizontal' style='font-size:14px;'>
 		<dt>Pemilik</dt> <dd><?=$item->owner;?></dd>
 		<dt>Lokasi <?=($item->type == Item::LOST)?'hilang':'ketemu';?></dt> <dd><?=$item->location;?></dd>
 		<dt>Kontak</dt><dd>{{ $item->contact_person }} </dd>

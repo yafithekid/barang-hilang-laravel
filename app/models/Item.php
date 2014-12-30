@@ -36,4 +36,12 @@ class Item extends \Eloquent {
 	{
 		return $this->hasMany('Comment','item_id','id');
 	}
+
+	public function getImageUrl(){
+		if ($this->image_filename === null){
+			return '';
+		} else {
+			return asset('uploads/item/'.$this->image_filename);
+		}
+	}
 }

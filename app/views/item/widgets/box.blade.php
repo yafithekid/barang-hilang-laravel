@@ -9,7 +9,10 @@
             @endif
         </div>
     </div>
-    <div class="box-body">
+    <div class="box-body" style='text-align:center;'>
+        <br>
+            <img src='{{$item->getImageUrl()}}' width='100px' height="100px" />
+        <br>
         <h5>Lokasi : {{ $item->location }} </h5>
     </div>
     <div class="box-footer">

@@ -6,7 +6,7 @@
         <h3 class="box-title">Form Pendaftaran</h3>
     </div>
     
-    <form action='<?=URL::action("HomeController@postRegister");?>' method='POST'>
+    <form action='<?=URL::action("HomeController@postRegister");?>' method='POST' enctype='multipart/form-data'>
     <div class='box-body'>
         
         
@@ -39,6 +39,12 @@
             <label for='email'>Email</label>
             <input type='text' name='email' value='<?=Input::old('email');?>' class='form-control'>
             <?= $errors->first('email'); ?>
+        </div>
+
+        <div class='form-group @if($errors->has("image")) has-error @endif'>
+            <label for='image'>Gambar</label>
+            <input type='file' name='image' value='<?=Input::old('image');?>' class='form-control'>
+            <?= $errors->first('image'); ?>
         </div>
         
     </div>

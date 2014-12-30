@@ -71,12 +71,13 @@
                             <div class='form-group'>
                                 <center><input type='submit' value='login' class='btn btn-warning' /></center>
                             </div>
-                            Belum punya akun? <a href='<?=URL::action('HomeController@getRegister');?>'>Daftar di sini</a>
+                            Belum punya akun? <a href='<?=URL::action('HomeController@getRegister');?>' style='color:#3c8dbc;'>Daftar di sini</a>
                         </form>
                     @else
                         <center>
                             <h4><?= Auth::user()->fullname;?></h4>
-                            <a href='<?=URL::action('HomeController@getLogout');?>' class='btn btn-warning'>Logout</a>
+                            <img src='{{Auth::user()->getImageUrl()}}' class='img-circle' width='100px' height="100px" /><br><br>
+                            <a href='<?=URL::action('HomeController@getLogout');?>' class='btn btn-warning' style='color:white'>Logout</a>
                         </center>
 
                     @endif
