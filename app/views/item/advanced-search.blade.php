@@ -30,9 +30,9 @@
 
 	<div class='form-group'>
 		<label for='position'>Posisi Barang</label>
-		<input type='hidden' name='lat' value='{{Input::old('lat')}}'/>
-		<input type='hidden' name="lng" value="{{Input::old('lng')}}">
-		<input type='hidden' name='rad' value='{{Input::old('rad')}}'/>
+		<input type='hidden' name='lat' id='lat' value='{{Input::old('lat',Item::DEFAULT_LAT)}}'/>
+		<input type='hidden' name="lng" id='lng' value="{{Input::old('lng',Item::DEFAULT_LNG)}}">
+		<input type='hidden' name='rad' id='rad' value='{{Input::old('rad',Item::DEFAULT_RAD)}}'/>
 		<div id='map-canvas' style='height:500px;'></div>
 	</div>
 
@@ -45,8 +45,8 @@
 @parent
 <script src='https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyC3h2wqa3ND0xEO6RiJJgirIgoX-w3Ckd0'></script>
 <script type="text/javascript">
-  var lat = <?=Item::DEFAULT_LAT;?>;
-  var lng = <?=Item::DEFAULT_LNG;?>;
+  var lat = <?=Input::old('lat',Item::DEFAULT_LAT);?>;
+  var lng = <?=Input::old('lng',Item::DEFAULT_LNG);?>;
   var mapOptions = {
           center: new google.maps.LatLng(lat,lng),
           zoom: 15
@@ -62,17 +62,20 @@
   });
   var circle = new google.maps.Circle({
       map: map,
-      radius: 300,
+      radius: {{Input::old('rad',Item::DEFAULT_RAD)}},
       editable: true,
     });
   circle.bindTo('center', marker, 'position');
-  $(document).ready(function(){initializeMarker();});
-  function initializeMarker(){
+  $(document).ready(function(){initialize();});
+  function initialize(){
       marker.setPosition(new google.maps.LatLng(lat,lng));
       google.maps.event.addListener(marker,'drag',function(e){
           //change 
-          $("#lost-lat").val(marker.getPosition().lat());
-          $("#lost-lng").val(marker.getPosition().lng());
+          $("#lat").val(marker.getPosition().lat());
+          $("#lng").val(marker.getPosition().lng());
+      });
+      google.maps.event.addListener(circle,'radius_changed',function(e){
+      	$("#rad").val(circle.getRadius());
       });
   }
 </script>

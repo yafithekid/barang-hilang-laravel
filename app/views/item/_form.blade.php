@@ -9,8 +9,8 @@
   <div class='form-group @if($errors->has("type")) has-error @endif'>
     <label for='type'>Laporan</label>
     <select name='type' value='{{$item->type}}' class='form-control'>
-      <option value='<?=Item::LOST;?>'>Kehilangan</option>
-      <option value='<?=Item::FOUND;?>'>Temuan</option>
+      <option label='Kehilangan' @if($item->type==Item::LOST) selected @endif>{{Item::LOST}}</option>
+      <option label='Temuan' @if($item->type==Item::FOUND) selected @endif>{{Item::FOUND}}</option>
     </select>
   </div>
 
@@ -43,7 +43,7 @@
       <label for='category_id'>Jenis Barang</label>
       <select name='category_id' value='{{$item->category_id}}' class='form-control'>
           <?php foreach ($item_categories as $item_category): ?>
-              <option value='<?=$item_category->id;?>'><?=$item_category->name;?></option>
+              <option label='<?=$item_category->name;?>' @if($item->category_id == $item_category->id) selected @endif ><?=$item_category->id;?></option>
           <?php endforeach; ?>
       </select>
       <span style='color:#f56954'><?= $errors->first('category_id'); ?></span>
