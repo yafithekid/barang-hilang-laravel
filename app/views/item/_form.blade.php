@@ -1,17 +1,14 @@
-@extends('layouts.master')
-
-@section('main-content')
   <?= Form::token(); ?>
   <input type='hidden' name='user_id' value='{{Auth::user()->id;}}'/>
   <div class='form-group @if($errors->has("name")) has-error @endif'>
       <label for='name'>Nama Barang</label>
-      <input type='text' name='name' value='<?=Input::old('name');?>' class='form-control'>
+      <input type='text' name='name' value='{{$item->name}}' class='form-control'>
       <span style='color:#f56954'><?= $errors->first('name'); ?></span>
   </div>
 
   <div class='form-group @if($errors->has("type")) has-error @endif'>
     <label for='type'>Laporan</label>
-    <select name='type' value='<?=Input::old('type');?>' class='form-control'>
+    <select name='type' value='{{$item->type}}' class='form-control'>
       <option value='<?=Item::LOST;?>'>Kehilangan</option>
       <option value='<?=Item::FOUND;?>'>Temuan</option>
     </select>
@@ -19,32 +16,32 @@
 
   <div class='form-group @if($errors->has("owner")) has-error @endif'>
       <label for='owner'>Nama Pemilik/Penemu</label>
-      <input type='text' name='owner' value='<?=Input::old('owner');?>' class='form-control'>
+      <input type='text' name='owner' value='{{$item->owner}}' class='form-control'>
       <span style='color:#f56954'><?= $errors->first('owner'); ?></span>
   </div>
 
   <div class='form-group @if($errors->has("contact_person")) has-error @endif'>
       <label for='contact_person'>Kontak yang bisa dihubungi</label>
-      <input type='text' name='contact_person' value='<?=Input::old('contact_person');?>' class='form-control'>
+      <input type='text' name='contact_person' value='{{$item->contact_person}}' class='form-control'>
       <span style='color:#f56954'><?= $errors->first('contact_person'); ?></span>
   </div>
   
   <div class='form-group @if($errors->has("location")) has-error @endif'>
     <label for='location'>Lokasi hilang/temuan</label>
-    <input type='text' name='location' value='<?=Input::old('location');?>' class='form-control'>
+    <input type='text' name='location' value='{{$item->location}}' class='form-control'>
     <span style='color:#f56954'><?= $errors->first('location'); ?></span>
   </div>
   
   <div class='form-group'>
       <label>Perkiraan lokasi hilang/temuan (Tarik marka merah)</label>
       <div id='map-canvas' style='height:500px;'></div>
-      <input type='hidden' name='lat' value='<?=Input::old('lat',Item::DEFAULT_LAT);?>' class='form-control' id='lost-lat'/>
-      <input type='hidden' name='lng' value='<?=Input::old('lng',Item::DEFAULT_LNG);?>' class='form-control' id='lost-lng'/>
+      <input type='hidden' name='lat' value='{{$item->lat}}' class='form-control' id='lost-lat'/>
+      <input type='hidden' name='lng' value='{{$item->lng}}' class='form-control' id='lost-lng'/>
   </div>
 
   <div class='form-group @if($errors->has("category_id")) has-error @endif'>
       <label for='category_id'>Jenis Barang</label>
-      <select name='category_id' value='<?=Input::old('category_id');?>' class='form-control'>
+      <select name='category_id' value='{{$item->category_id}}' class='form-control'>
           <?php foreach ($item_categories as $item_category): ?>
               <option value='<?=$item_category->id;?>'><?=$item_category->name;?></option>
           <?php endforeach; ?>
@@ -54,23 +51,22 @@
 
   <div class='form-group @if($errors->has("description")) has-error @endif'>
       <label for='description'>Deskripsi</label>
-      <textarea name='description' class='form-control'><?=Input::old('description');?></textarea>
+      <textarea name='description' class='form-control'>{{$item->description}}</textarea>
       <span style='color:#f56954'><?= $errors->first('description'); ?></span>
   </div>
 
   <div class='form-group @if($errors->has("image")) has-error @endif'>
     <label for='image'>Gambar</label>
-    <input type='file' name='image' class='form-control' value='<?=Input::old("image");?>' />
+    <input type='file' name='image' class='form-control' value='{{$item->image}}' />
     <span style='color:#f56954'><?= $errors->first('image'); ?></span>
   </div>
-@stop
 
 @section('script')
 @parent
 <script src='https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyC3h2wqa3ND0xEO6RiJJgirIgoX-w3Ckd0'></script>
 <script type="text/javascript">
-  var lat = <?=$lost_item->lat;?>;
-  var lng = <?=$lost_item->lng;?>;
+  var lat = <?=$item->lat;?>;
+  var lng = <?=$item->lng;?>;
   var mapOptions = {
           center: new google.maps.LatLng(lat,lng),
           zoom: 15

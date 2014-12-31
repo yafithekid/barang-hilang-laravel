@@ -34,18 +34,21 @@ class ItemController extends \BaseController {
 	}
 
 	public function getCreate(){
-		$lost_item = new Item();
-		$lost_item->lat = Item::DEFAULT_LAT;
-		$lost_item->lng = Item::DEFAULT_LNG;
-		View::share('lost_item', $lost_item);
-		View::share('item_categories', Category::all());
-		return View::make('item.create');
+		$item = new Item();
+		$item->lat = Item::DEFAULT_LAT;
+		$item->lng = Item::DEFAULT_LNG;
+		//View::share('item', $item);
+		//View::share('item_categories', Category::all());
+		return View::make('item.create',['item'=>$item,'item_categories'=>Category::all()]);
 	}
 
 	public function postCreate(){
 		$validation = Validator::make(Input::all(),Item::$rules);
 		if ($validation->fails()){
-			return Redirect::back()->withInput()->withErrors($validation);
+			$item = new Item();
+			$item->fill(Input::all());
+			return View::make('item.create',
+				['item'=>$item,'item_categories'=>Category::all(),'errors'=>$validation->errors()]);
 		} else {
 			$item = new Item(Input::all());		
 			$item->save();
@@ -81,5 +84,58 @@ class ItemController extends \BaseController {
 		} else {
 			return View::make('item.view',['item'=>$item,'comments' => $item->comments]);
 		}	
+	}
+
+	public function anyMine()
+	{
+		$items = Item::where('user_id','=',Auth::user()->id)->paginate(10);
+		return View::make('item.mine',['items' => $items]);
+	}
+
+	public function getUpdate($id)
+	{
+		if (($item = Item::find($id)) === null){
+			App::abort(404);
+		} else {
+			Input::merge($item->toArray());
+			View::share('lost_item', Item::find($id));
+			View::share('item_categories', Category::all());
+			return View::make('item.update',['item'=>$item,'item_categories'=>Category::all()]);
+		}
+	}
+
+	public function postUpdate($id)
+	{
+		$item = Item::find($id);
+		$item->fill(Input::all());
+		$item->user_id = Auth::user()->id;	
+		$validation = Validator::make($item->toArray(),Item::$rules);
+		if ($validation->fails()){
+			return View::make('item.update',['item'=>$item,'item_categories'=>Category::all(),'errors'=>$validation->errors()]);
+		} else {
+			$item->save();
+			if (Input::hasFile('image')){
+				$image = Input::file('image');
+				$extension = $image->getClientOriginalExtension();
+				$image->move(Item::imagePath(),"$item->id.".$extension);
+				$item->image_filename = "$item->id.$extension";
+				$item->save();
+			}	
+			Session::flash('global-success','Barang berhasil diubah');
+			return Redirect::action('ItemController@anyIndex');
+		}
+	}
+	public function anyAdvancedSearch(){
+		if (Input::has('do-search')){
+			$query = Item::where('type','=',Input::get('category_id'));
+			if (Input::get('use-name'))
+				$query = $query->where('name','LIKE',"%".Input::get('name')."%");
+			if (Input::get('use-distance')){
+				$query = $query->where("latlng_distance(lat,lng,".Input::get('lat').",".Input::get('lng').")",'<',Input::get('rad'));
+			}
+			return View::make('item.advanced-search',['categories'=>Category::all()])->withInput();
+		} else {	
+			return View::make('item.advanced-search',['categories'=>Category::all()]);
+		}
 	}
 }

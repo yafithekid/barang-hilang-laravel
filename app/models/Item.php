@@ -12,7 +12,7 @@ class Item extends \Eloquent {
 
 	public $image;
 
-	protected $fillable = ['name','owner','lat','lng','contact_person','category_id','description','location'];
+	protected $fillable = ['name','owner','lat','lng','contact_person','category_id','description','location','user_id'];
 	protected $table = 'item';
 
 	public static $rules = [
