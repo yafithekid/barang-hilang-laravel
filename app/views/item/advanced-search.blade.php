@@ -149,4 +149,5 @@
   	$("#use-character").change(function(){checkUseCharacter()});
   
 </script>
+
 @stop

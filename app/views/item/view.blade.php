@@ -18,6 +18,9 @@
         <div class='col-xs-6'>
             <div id='map-canvas' style='height:300px'></div><br/><br/>
         </div>
+        <div class='form-group'>
+          <div class="fb-share-button" data-href="{{URL::action('ItemController@anyView',['id'=>$item->id])}}" data-layout="button_count"></div>
+        </div>
     </div>
 	<div class='clearfix'></div>
 	<div class="box box-success">
@@ -83,4 +86,12 @@
       marker.setPosition(new google.maps.LatLng(lat,lng));
   }
 </script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=363050293866988&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 @stop
