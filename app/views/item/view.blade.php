@@ -4,14 +4,14 @@
 	<h1><?= ($item->type == Item::LOST)?'Hilang':'Ditemukan';?>: <?=$item->name;?></h1>
 </section>
 <section class='content'>
-	<h4>Dilaporkan pada <?=$item->created_at;?> </h4>
+	<h4>Dilaporkan oleh {{$item->user->fullname}} pada {{ $item->created_at }}</h4>
     <div class='col-xs-12'>
         <div class='col-xs-6'>
             <img src='{{$item->getImageUrl()}}' max-width='100px' max-height='100px' />
             <dl class='dl-horizontal' style='font-size:14px;'>
-                <dt>Pemilik</dt> <dd><?=$item->owner;?></dd>
                 <dt>Lokasi <?=($item->type == Item::LOST)?'hilang':'ketemu';?></dt> <dd><?=$item->location;?></dd>
-                <dt>Kontak</dt><dd>{{ $item->contact_person }} </dd>
+                <dt>Kontak</dt><dd>{{ $item->contact_no }} </dd>
+                <dt>Nama Kontak</dt><dd>{{ $item->contact_name }}</dd>
             </dl>
             <p>{{$item->description}}</p>
         </div>

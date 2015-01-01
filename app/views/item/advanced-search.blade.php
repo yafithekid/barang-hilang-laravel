@@ -7,36 +7,47 @@
 <form action='{{URL::action('ItemController@anyAdvancedSearch')}}' method='get'>
 	<div class='form-group'>
 		<label for='type'>Tipe</label>
-		<select name='type' class='form-control' value='{{Input::old('type')}}'>
-			<option value='{{Item::LOST}}'>Barang hilang</option>
-			<option value='{{Item::FOUND}}'>Barang temuan</option>
+		<select name='type' class='form-control'>
+			<option label='Barang hilang' @if (Input::get('type') == Item::LOST) selected @endif>{{Item::LOST}}</option>
+			<option label='Barang temuan' @if (Input::get('type') == Item::FOUND) selected @endif>{{Item::FOUND}}</option>
 		</select>
 	</div>
 	<div class='form-group'>
-		<input name='use-name' type='checkbox' value='{{Input::old('use-name')}}'>
+		<input name='use-name' type='checkbox' value='1' id='use-name' @if(Input::get('use-name')) checked @endif>
 		<label for='name'>Nama barang</label>
-		<input type='text' name='name' class='form-control' value='{{Input::old('name')}}'/>
+		<input type='text' name='name' class='form-control' value='{{Input::get('name')}}' id='name' disabled/>
 	</div>
 
 	<div class='form-group'>
-		<input name='use-category' type='checkbox' value='{{Input::old('use-category')}}'>
+		<input type='checkbox' name='use-category_id' value='1' id='use-category_id' @if(Input::get('use-category_id')) checked @endif>
 		<label for='category_id'>Kategori</label>
-		<select name='category_id' value='{{Input::old('category_id')}}' class='form-control'>
+		<select name='category_id' class='form-control' id='category_id' disabled>
 			@foreach($categories as $category)
-				<option value='{{$category->id}}'>{{$category->name}}</option>
+				<option label='{{$category->name}}' @if(Input::get('category_id') == $category->id) selected @endif>{{$category->id}}</option>
 			@endforeach
 		</select>
 	</div>
 
 	<div class='form-group'>
+		<input type='checkbox' name='use-position' id='use-position' @if(Input::get('use-position')) checked @endif >
 		<label for='position'>Posisi Barang</label>
-		<input type='hidden' name='lat' id='lat' value='{{Input::old('lat',Item::DEFAULT_LAT)}}'/>
-		<input type='hidden' name="lng" id='lng' value="{{Input::old('lng',Item::DEFAULT_LNG)}}">
-		<input type='hidden' name='rad' id='rad' value='{{Input::old('rad',Item::DEFAULT_RAD)}}'/>
+		<input type='hidden' name='lat' id='lat' value='{{Input::get('lat',Item::DEFAULT_LAT)}}' disabled/>
+		<input type='hidden' name="lng" id='lng' value="{{Input::get('lng',Item::DEFAULT_LNG)}}" disabled/>
+		<input type='hidden' name='rad' id='rad' value='{{Input::get('rad',Item::DEFAULT_RAD)}}' disabled/>
 		<div id='map-canvas' style='height:500px;'></div>
 	</div>
 
+	<div class='form-group'>
+		<input type='submit' value='Cari' class='btn btn-primary'/>
+	</div>
 </form>
+@if (isset($items))
+@foreach($items as $item)
+	<div class='col-xs-4'>
+		@include('item.widgets.box',['item'=>$item])
+	</div>
+@endforeach
+@endif
 </section>
 @stop
 
@@ -62,7 +73,7 @@
   });
   var circle = new google.maps.Circle({
       map: map,
-      radius: {{Input::old('rad',Item::DEFAULT_RAD)}},
+      radius: {{Input::old('rad',Item::DEFAULT_RAD * 3000)}},
       editable: true,
     });
   circle.bindTo('center', marker, 'position');
@@ -77,6 +88,48 @@
       google.maps.event.addListener(circle,'radius_changed',function(e){
       	$("#rad").val(circle.getRadius());
       });
+      checkUsePosition();
+      checkUseName();
+      checkUseCategoryId();
   }
+  function checkUsePosition(){
+	  	var val = $("#use-position").prop('checked');
+	  	//console.log(val);
+	  	if (val){
+	  		$("#lat").attr('disabled',false);
+	  		$("#lng").attr('disabled',false);
+	  		$("#rad").attr('disabled',false);
+	  		marker.setVisible(true);
+	  		circle.setVisible(true);
+	  	} else {
+	  		$("#lat").attr('disabled',true);
+	  		$("#lng").attr('disabled',true);
+	  		$("#rad").attr('disabled',true);
+	  		marker.setVisible(false);
+	  		circle.setVisible(false);
+	  	}	
+  }
+  function checkUseName(){
+  	var val = $("#use-name").prop('checked');
+  		console.log(val);
+  		if (val){
+  			$("#name").attr('disabled',false);
+  		} else {
+  			$("#name").attr('disabled',true);
+  		}
+  }
+  function checkUseCategoryId(){
+  		var val = $("#use-category_id").prop('checked');
+  		//console.log(val);
+  		if (val){
+  			$("#category_id").attr('disabled',false);
+  		} else {
+  			$("#category_id").attr('disabled',true);
+  		}
+  }
+  	$("#use-position").change(function(){checkUsePosition();});
+  	$("#use-name").change(function(){checkUseName();});
+  	$("#use-category_id").change(function(){checkUseCategoryId();});
+  
 </script>
 @stop

@@ -126,14 +126,18 @@ class ItemController extends \BaseController {
 		}
 	}
 	public function anyAdvancedSearch(){
-		if (Input::has('do-search')){
-			$query = Item::where('type','=',Input::get('category_id'));
-			if (Input::get('use-name'))
-				$query = $query->where('name','LIKE',"%".Input::get('name')."%");
-			if (Input::get('use-distance')){
-				$query = $query->where("latlng_distance(lat,lng,".Input::get('lat').",".Input::get('lng').")",'<',Input::get('rad'));
+		//type is a must
+		if (Input::has('type')){
+			$query = Item::where('type','=',Input::get('type'));
+			if (Input::has('name'))
+				$query->where('name','LIKE',"%".Input::get('name')."%");
+			//lat, lng, rad is a packet. any check on one of them is valid
+			if (Input::has('lat')){
+				//input from google maps given with meters.
+				$query->whereRaw("latlng_distance(`lat`,`lng`,".Input::get('lat').",".Input::get('lng').") <= ".Input::get('rad')/1000);
 			}
-			return View::make('item.advanced-search',['categories'=>Category::all()])->withInput();
+			$items = $query->get();
+			return View::make('item.advanced-search',['categories'=>Category::all(),'items'=>$items]);
 		} else {	
 			return View::make('item.advanced-search',['categories'=>Category::all()]);
 		}

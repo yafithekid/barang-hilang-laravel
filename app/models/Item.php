@@ -5,7 +5,7 @@ class Item extends \Eloquent {
 	const DEFAULT_LAT = -6.8914441;
 	const DEFAULT_LNG = 107.6106617;
 	
-	const DEFAULT_RAD = 300; //300km
+	const DEFAULT_RAD = 0.300; //3km
 
 	const LOST = 'lost';
 	const FOUND = 'found';
@@ -14,21 +14,25 @@ class Item extends \Eloquent {
 
 	public $image;
 
-	protected $fillable = ['name','type','finished','owner','lat','lng','contact_person','category_id','description','location','user_id','image_filename'];
+	protected $fillable = ['name','type','finished','contact_name','lat','lng','contact_no','category_id','description','location','user_id','image_filename'];
 	protected $table = 'item';
 
 	public static $rules = [
 		'name' => 'required',
 		'type' => 'required',
-		'owner' => 'required',
+		'contact_name' => 'required',
 		'lat' => 'numeric',
 		'lng' => 'numeric',
 		'image' => 'image',
-		'contact_person' => 'required',
+		'contact_no' => 'required',
 		'category_id' => 'required',
 		'location' => 'required',
 	];
 	
+	public function user(){
+		return $this->belongsTo('User','user_id','id');
+	}
+
 	public function category()
 	{
 		return $this->hasOne('Category','category_id','id');

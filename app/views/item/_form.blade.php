@@ -14,16 +14,16 @@
     </select>
   </div>
 
-  <div class='form-group @if($errors->has("owner")) has-error @endif'>
-      <label for='owner'>Nama Pemilik/Penemu</label>
-      <input type='text' name='owner' value='{{$item->owner}}' class='form-control'>
-      <span style='color:#f56954'><?= $errors->first('owner'); ?></span>
+  <div class='form-group @if($errors->has("contact_no")) has-error @endif'>
+      <label for='contact_no'>HP/Email yang bisa dihubungi</label>
+      <input type='text' name='contact_no' value='{{$item->contact_no}}' class='form-control'>
+      <span style='color:#f56954'><?= $errors->first('contact_no'); ?></span>
   </div>
 
-  <div class='form-group @if($errors->has("contact_person")) has-error @endif'>
-      <label for='contact_person'>Kontak yang bisa dihubungi</label>
-      <input type='text' name='contact_person' value='{{$item->contact_person}}' class='form-control'>
-      <span style='color:#f56954'><?= $errors->first('contact_person'); ?></span>
+  <div class='form-group @if($errors->has("contact_name")) has-error @endif'>
+      <label for='contact_name'>Nama Kontak</label>
+      <input type='text' name='contact_name' value='{{$item->contact_name}}' class='form-control'>
+      <span style='color:#f56954'><?= $errors->first('owner'); ?></span>
   </div>
   
   <div class='form-group @if($errors->has("location")) has-error @endif'>
