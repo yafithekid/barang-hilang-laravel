@@ -60,7 +60,7 @@
     <input type='file' name='image' class='form-control' value='{{$item->image}}' />
     <span style='color:#f56954'><?= $errors->first('image'); ?></span>
   </div>
-
+  
 @section('script')
 @parent
 <script src='https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyC3h2wqa3ND0xEO6RiJJgirIgoX-w3Ckd0'></script>

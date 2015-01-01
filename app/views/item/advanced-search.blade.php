@@ -29,6 +29,13 @@
 	</div>
 
 	<div class='form-group'>
+		<input type='checkbox' name='use-character' id='use-character' @if (Input::get('use-character')) checked @endif>
+		<label for='character'>Karakter Barang. Pisahkan kata dengan spasi (misal: <i>hitam B1234UH</i>)</label>
+		<input name='character' id='character' class='form-control' value='{{Input::get('character')}}' type='text'/>
+	</div>
+
+
+	<div class='form-group'>
 		<input type='checkbox' name='use-position' id='use-position' @if(Input::get('use-position')) checked @endif >
 		<label for='position'>Posisi Barang</label>
 		<input type='hidden' name='lat' id='lat' value='{{Input::get('lat',Item::DEFAULT_LAT)}}' disabled/>
@@ -37,6 +44,7 @@
 		<div id='map-canvas' style='height:500px;'></div>
 	</div>
 
+	
 	<div class='form-group'>
 		<input type='submit' value='Cari' class='btn btn-primary'/>
 	</div>
@@ -91,6 +99,7 @@
       checkUsePosition();
       checkUseName();
       checkUseCategoryId();
+      checkUseCharacter();
   }
   function checkUsePosition(){
 	  	var val = $("#use-position").prop('checked');
@@ -111,7 +120,6 @@
   }
   function checkUseName(){
   	var val = $("#use-name").prop('checked');
-  		console.log(val);
   		if (val){
   			$("#name").attr('disabled',false);
   		} else {
@@ -127,9 +135,18 @@
   			$("#category_id").attr('disabled',true);
   		}
   }
+  function checkUseCharacter(){
+  	var val = $("#use-character").prop('checked');
+  	if (val){
+  		$("#character").attr('disabled',false);
+  	} else {
+  		$("#character").attr('disabled',true);
+  	}
+  }
   	$("#use-position").change(function(){checkUsePosition();});
   	$("#use-name").change(function(){checkUseName();});
   	$("#use-category_id").change(function(){checkUseCategoryId();});
+  	$("#use-character").change(function(){checkUseCharacter()});
   
 </script>
 @stop

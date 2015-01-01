@@ -43,6 +43,10 @@ class Item extends \Eloquent {
 		return $this->hasMany('Comment','item_id','id');
 	}
 
+	public function tags(){
+		return $this->hasMany('Tag','item_id','id');
+	}
+
 	public function getImageUrl(){
 		if ($this->image_filename === null){
 			return '';

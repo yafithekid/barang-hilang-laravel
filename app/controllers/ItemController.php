@@ -16,8 +16,8 @@ class ItemController extends \BaseController {
 	 * @var $category_id id of category
 	 */
 	public function anyCategory($category_id){
-		$lost_items = Item::where('category_id','=',$category_id)->where('type','=',Item::LOST)->where('hidden','=',0)->paginate(1);
-		$found_items = Item::where('category_id','=', $category_id)->where('type','=',Item::FOUND)->where('hidden','=',0)->paginate(1);
+		$lost_items = Item::where('category_id','=',$category_id)->where('type','=',Item::LOST)->where('hidden','=',0)->paginate(12);
+		$found_items = Item::where('category_id','=', $category_id)->where('type','=',Item::FOUND)->where('hidden','=',0)->paginate(12);
 		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 
@@ -135,6 +135,17 @@ class ItemController extends \BaseController {
 			if (Input::has('lat')){
 				//input from google maps given with meters.
 				$query->whereRaw("latlng_distance(`lat`,`lng`,".Input::get('lat').",".Input::get('lng').") <= ".Input::get('rad')/1000);
+			}
+			if (Input::has('character')){
+				$qstr = '';
+				//take only alphanumeric string
+				$words = explode(' ',preg_replace("/[^a-zA-Z0-9\ ]+/", "",Input::get('character')));
+				$cw = count($words);
+				$qstr = '`description` LIKE \'%'.$words[0].'%\'';
+				for($i = 1; $i < $cw; $i++){
+					$qstr.= ' OR `description` LIKE \'%'.$words[$i].'%\'';
+				}
+				$query->whereRaw("($qstr)");
 			}
 			$items = $query->get();
 			return View::make('item.advanced-search',['categories'=>Category::all(),'items'=>$items]);
