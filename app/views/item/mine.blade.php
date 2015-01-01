@@ -19,6 +19,7 @@
                     <th>Tipe</th>
                     <th>Lokasi</th>
                     <th>Status</th>
+                    <th>Tampilkan</th>
                     <th>Jumlah Komentar</th>
                     <th>Aksi</th>
                 </tr>
@@ -33,6 +34,21 @@
                     	@else
                     		Belum selesai
                     	@endif
+                    	<a href='{{ URL::action('ItemController@anyStatus',['id'=>$item->id])}}'>
+                    		<span class='fa fa-pencil'></span>
+                    	</a>
+                    	</span>
+                   	</td>
+                   	<td>
+                   		<span class="label @if($item->hidden == 0) label-success @else label-warning @endif">
+                    	@if ($item->hidden == 1)
+                    		Tidak
+                    	@else
+                    		Ya
+                    	@endif
+                    	<a href='{{ URL::action('ItemController@anyHidden',['id'=>$item->id])}}'>
+                    		<span class='fa fa-pencil'></span>
+                    	</a>
                     	</span>
                    	</td>
                     <td>{{$item->comments->count()}}</td>

@@ -6,8 +6,8 @@ class ItemController extends \BaseController {
 	 * just for say hello
 	 */
 	public function anyIndex(){
-		$lost_items = Item::where('type','=',Item::LOST)->paginate(12);
-		$found_items = Item::where('type','=',Item::FOUND)->paginate(12);
+		$lost_items = Item::where('type','=',Item::LOST)->where('hidden','=',0)->paginate(12);
+		$found_items = Item::where('type','=',Item::FOUND)->where('hidden','=',0)->paginate(12);
 		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 	/**
@@ -16,8 +16,8 @@ class ItemController extends \BaseController {
 	 * @var $category_id id of category
 	 */
 	public function anyCategory($category_id){
-		$lost_items = Item::where('category_id','=',$category_id)->where('type','=',Item::LOST)->paginate(1);
-		$found_items = Item::where('category_id','=', $category_id)->where('type','=',Item::FOUND)->paginate(1);
+		$lost_items = Item::where('category_id','=',$category_id)->where('type','=',Item::LOST)->where('hidden','=',0)->paginate(1);
+		$found_items = Item::where('category_id','=', $category_id)->where('type','=',Item::FOUND)->where('hidden','=',0)->paginate(1);
 		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 
@@ -28,8 +28,8 @@ class ItemController extends \BaseController {
 	public function anySearch()
 	{
 		$q = Input::get('q');
-		$lost_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::LOST)->paginate(12);
-		$found_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::FOUND)->paginate(12);
+		$lost_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::LOST)->where('hidden','=',0)->paginate(12);
+		$found_items = Item::where('name','LIKE',"%$q%")->where('type','=',Item::FOUND)->where('hidden','=',0)->paginate(12);
 		return View::make('item.index',['lost_items'=>$lost_items,'found_items'=>$found_items]);
 	}
 
@@ -141,5 +141,32 @@ class ItemController extends \BaseController {
 		} else {	
 			return View::make('item.advanced-search',['categories'=>Category::all()]);
 		}
+	}
+
+	public function anyStatus($id)
+	{
+		$item = Item::find($id);
+		if ($item !== null){
+			if ($item->finished){
+				$item->finished = 0;
+			} else {
+				$item->finished = 1;
+			}
+			$item->save();
+		}
+		return Redirect::route('item.mine');
+	}
+
+	public function anyHidden($id){
+		$item = Item::find($id);
+		if ($item !== null){
+			if ($item->hidden){
+				$item->hidden = 0;
+			} else {
+				$item->hidden = 1;
+			}
+			$item->save();
+		}
+		return Redirect::route('item.mine');
 	}
 }

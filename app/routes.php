@@ -24,10 +24,12 @@ Route::group(['prefix' => '/item'],function(){
 		Route::get('/create',['uses' =>'ItemController@getCreate']);
 		Route::post('/create',['uses' => 'ItemController@postCreate']);
 		Route::post('/{id}/add-comment',['uses' => 'ItemController@postComment']);
-		Route::any('/mine',['uses' => 'ItemController@anyMine']);
+		Route::any('/mine',['uses' => 'ItemController@anyMine' ,'as' => 'item.mine']);
 		Route::get('/{id}/update',['uses'=>'ItemController@getUpdate']);
 		Route::post('/{id}/update',['uses'=>'ItemController@postUpdate']);
 		Route::any('/{id}/delete',['uses'=>'ItemController@anyDelete']);
+		Route::any('/{id}/hidden',['uses'=>'ItemController@anyHidden']);
+		Route::any('/{id}/change-status',['uses' => 'ItemController@anyStatus']);
 	});
 	
 	Route::any('/advanced-search',['uses'=>'ItemController@anyAdvancedSearch']);

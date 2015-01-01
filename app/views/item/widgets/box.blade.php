@@ -2,10 +2,8 @@
     <div class="box-header" style='min-height: 72px' >
         <h3 class="box-title" >{{substr($item->name,0,35).((strlen($item->name) > 35)?'...':'')}}</h3>
         <div class="box-tools pull-right">
-        	@if (isset($labels))
-	        	@foreach($labels as $label)
-	            <div class="label bg-aqua">{{ $label }}</div>
-	            @endforeach
+        	@if ($item->finished)
+	            <div class="label bg-aqua">Selesai</div>
             @endif
         </div>
     </div>
