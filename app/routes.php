@@ -53,6 +53,8 @@ Route::get('/register',['as'=>'register','uses' => 'HomeController@getRegister']
 Route::post('/register',['uses' => 'HomeController@postRegister']);
 Route::post('/login',['as'=>'login','uses' => 'HomeController@postLogin']);
 Route::get('/login', ['uses' => 'HomeController@getLogin']);
+Route::get('/forgot-password',['uses'=>'HomeController@getForgotPassword']);
+Route::post('/forgot-password',['uses' => 'HomeController@postForgotPassword']);
 
 Route::get('/logout',['uses' => 'HomeController@getLogout']);
 Route::get('/',['as'=>'home','uses'=>'ItemController@anyIndex']);

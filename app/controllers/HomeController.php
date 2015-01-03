@@ -79,4 +79,15 @@ class HomeController extends BaseController {
 		Auth::logout();
 		return Redirect::route('home');
 	}
+
+	public function getForgotPassword(){
+		return View::make('home.forgot-password');
+	}	
+
+	public function postForgotPassword(){
+		//TO DO HERE
+		$email = Input::get('email');
+		Session::flash('global-success','Silakan cek email anda');	
+		return Redirect::home();
+	}
 }
