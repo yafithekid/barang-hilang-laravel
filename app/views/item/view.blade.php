@@ -7,7 +7,15 @@
 	<h4>Dilaporkan oleh {{$item->user->fullname}} pada {{ $item->created_at }}</h4>
     <div class='col-xs-12'>
         <div class='col-xs-6'>
-            <img src='{{$item->getImageUrl()}}' max-width='100px' max-height='100px' />
+            <div class='row'>
+              <img src='{{$item->getImageUrl(1)}}' width='300px' height='300px' id='main-img'/>
+            </div>
+            @foreach([1,2,3] as $i)
+              @if ($item->getImageUrl($i))
+                <img src='{{$item->getImageUrl($i)}}' width='50px' height='50px' id='img-{{$i}}' style='border: 1px solid black'/>
+              @endif
+            @endforeach
+            <br/>
             <dl class='dl-horizontal' style='font-size:14px;'>
                 <dt>Lokasi <?=($item->type == Item::LOST)?'hilang':'ketemu';?></dt> <dd><?=$item->location;?></dd>
                 <dt>Kontak</dt><dd>{{ $item->contact_no }} </dd>
@@ -17,9 +25,9 @@
         </div>
         <div class='col-xs-6'>
             <div id='map-canvas' style='height:300px'></div><br/><br/>
-        </div>
-        <div class='form-group'>
-          <div class="fb-share-button" data-href="{{URL::action('ItemController@anyView',['id'=>$item->id])}}" data-layout="button_count"></div>
+            <div class='form-group'>
+            <div class="fb-share-button" data-href="{{URL::action('ItemController@anyView',['id'=>$item->id])}}" data-layout="button_count"></div>
+          </div>
         </div>
     </div>
 	<div class='clearfix'></div>
@@ -85,6 +93,21 @@
   function initializeMarker(){
       marker.setPosition(new google.maps.LatLng(lat,lng));
   }
+
+  $(document).ready(function(){
+    $("#img-1").hover(function(){
+      var src = $(this).attr('src');
+      $("#main-img").attr('src',src);
+    });
+    $("#img-2").hover(function(){
+      var src = $(this).attr('src');
+      $("#main-img").attr('src',src);
+    });
+    $("#img-3").hover(function(){
+      var src = $(this).attr('src');
+      $("#main-img").attr('src',src);
+    });
+  });
 </script>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

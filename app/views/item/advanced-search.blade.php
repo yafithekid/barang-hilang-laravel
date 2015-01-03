@@ -55,6 +55,8 @@
 		@include('item.widgets.box',['item'=>$item])
 	</div>
 @endforeach
+@else
+  <p>Tidak ditemukan apapun dalam pencarian.</p>
 @endif
 </section>
 @stop
@@ -64,8 +66,8 @@
 @parent
 <script src='https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyC3h2wqa3ND0xEO6RiJJgirIgoX-w3Ckd0'></script>
 <script type="text/javascript">
-  var lat = <?=Input::old('lat',Item::DEFAULT_LAT);?>;
-  var lng = <?=Input::old('lng',Item::DEFAULT_LNG);?>;
+  var lat = <?=Input::get('lat',Item::DEFAULT_LAT);?>;
+  var lng = <?=Input::get('lng',Item::DEFAULT_LNG);?>;
   var mapOptions = {
           center: new google.maps.LatLng(lat,lng),
           zoom: 15
@@ -81,7 +83,7 @@
   });
   var circle = new google.maps.Circle({
       map: map,
-      radius: {{Input::old('rad',Item::DEFAULT_RAD * 3000)}},
+      radius: {{Input::get('rad',Item::DEFAULT_RAD)}},
       editable: true,
     });
   circle.bindTo('center', marker, 'position');
@@ -95,6 +97,7 @@
       });
       google.maps.event.addListener(circle,'radius_changed',function(e){
       	$("#rad").val(circle.getRadius());
+        console.log(circle.getRadius());
       });
       checkUsePosition();
       checkUseName();

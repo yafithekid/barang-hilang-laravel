@@ -21,9 +21,9 @@
         <header class='header'>
             <div class='container'>
                 <div class='col-xs-12'>
-                    <div class='col-xs-2'>
-                        <a href='<?=URL::action('ItemController@anyIndex');?>'>
-                            <?= HTML::image('img/logo.png','logo',['height'=>46,'style'=>'padding: 4px;']); ?>
+                    <div class='col-xs-3'>
+                        <a href='<?=URL::action('ItemController@anyIndex');?>' style="font-family: 'Kaushan Script', cursive; font-size: 20px; color:white;">
+                            <?= HTML::image('img/logo.png','logo',['height'=>48]); ?>
                             Barang Hilang</a>
                     </div>
                     <div class='col-xs-8'>

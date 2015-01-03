@@ -21,12 +21,12 @@
         <header class='header'>
             <div class='container'>
                 <div class='col-xs-12'>
-                    <div class='col-xs-2' style='padding-top: 8px; padding-bottom: 8px;'>
-                        <a href='<?=URL::action('ItemController@anyIndex');?>'>
+                    <div class='col-xs-3' style='padding-top: 8px; padding-bottom: 8px;'>
+                        <a href='<?=URL::action('ItemController@anyIndex');?>' style="font-family: 'Kaushan Script', cursive; font-size: 20px; color:white;">
                             <?= HTML::image('img/logo.png','logo',['height'=>48]); ?>
                             Barang Hilang</a>
                     </div>
-                    <div class='col-xs-8'>
+                    <div class='col-xs-7'>
                         <div class='col-xs-12' >
                             <form action='<?=URL::action('ItemController@anySearch');?>' method='GET' role="search" >                             
                             <div class='col-xs-10' style='padding-right:0px;'>

@@ -52,12 +52,17 @@ class ItemController extends \BaseController {
 		} else {
 			$item = new Item(Input::all());		
 			$item->save();
-			if (Input::hasFile('image')){
-				$image = Input::file('image');
-				$extension = $image->getClientOriginalExtension();
-				$image->move(Item::imagePath(),"$item->id.".$extension);
-				$item->image_filename = "$item->id.$extension";
-				$item->save();
+			if (Input::hasFile('file_image_1')){
+				$item->file_image_1 = Input::file('file_image_1');
+				$item->saveImage(1);
+			}
+			if (Input::hasFile('file_image_2')){
+				$item->file_image_2 = Input::file('file_image_2');
+				$item->SaveImage(2);
+			}
+			if (Input::hasFile('file_image_3')){
+				$item->file_image_3 = Input::file('file_image_3');
+				$item->SaveImage(3);
 			}	
 			Session::flash('global-success','Barang berhasil ditambahkan');
 			return Redirect::action('ItemController@anyIndex');
@@ -114,13 +119,26 @@ class ItemController extends \BaseController {
 			return View::make('item.update',['item'=>$item,'item_categories'=>Category::all(),'errors'=>$validation->errors()]);
 		} else {
 			$item->save();
+			if (Input::hasFile('file_image_1')){
+				$item->file_image_1 = Input::file('file_image_1');
+				$item->saveImage(1);
+			}
+			if (Input::hasFile('file_image_2')){
+				$item->file_image_2 = Input::file('file_image_2');
+				$item->SaveImage(2);
+			}
+			if (Input::hasFile('file_image_3')){
+				$item->file_image_3 = Input::file('file_image_3');
+				$item->SaveImage(3);
+			}
+			/*
 			if (Input::hasFile('image')){
 				$image = Input::file('image');
 				$extension = $image->getClientOriginalExtension();
 				$image->move(Item::imagePath(),"$item->id.".$extension);
 				$item->image_filename = "$item->id.$extension";
 				$item->save();
-			}	
+			}*/
 			Session::flash('global-success','Barang berhasil diubah');
 			return Redirect::action('ItemController@anyIndex');
 		}
@@ -132,6 +150,8 @@ class ItemController extends \BaseController {
 			if (Input::has('name'))
 				$query->where('name','LIKE',"%".Input::get('name')."%");
 			//lat, lng, rad is a packet. any check on one of them is valid
+			if (Input::has('category_id'))
+				$query->where('category_id','=',Input::get('category_id'));
 			if (Input::has('lat')){
 				//input from google maps given with meters.
 				$query->whereRaw("latlng_distance(`lat`,`lng`,".Input::get('lat').",".Input::get('lng').") <= ".Input::get('rad')/1000);

@@ -9,7 +9,7 @@ Barang Temuan
 	@if ($found_items->count() > 0)
 		@foreach($found_items as $item)
 		<div class='col-xs-4'>
-			@include('item.widgets.box',['item' => $item]);
+			@include('item.widgets.box',['item' => $item])
 	    </div>
 	    @endforeach
 	    <div style="clear:both"></div> 
@@ -27,7 +27,7 @@ Barang Hilang
 	@if ($lost_items->count() > 0)
 		@foreach($lost_items as $item)
 		<div class='col-xs-4'>
-			@include('item.widgets.box',['item'=>$item]);
+			@include('item.widgets.box',['item'=>$item])
 	    </div>
    		@endforeach
    		<div style="clear:both"></div>

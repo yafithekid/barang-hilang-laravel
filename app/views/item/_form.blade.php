@@ -55,10 +55,55 @@
       <span style='color:#f56954'><?= $errors->first('description'); ?></span>
   </div>
 
-  <div class='form-group @if($errors->has("image")) has-error @endif'>
-    <label for='image'>Gambar</label>
-    <input type='file' name='image' class='form-control' value='{{$item->image}}' />
-    <span style='color:#f56954'><?= $errors->first('image'); ?></span>
+  <div class='form-group @if($errors->has("file_image_1")) has-error @endif'>
+    <label for='file_image_1'>Gambar 1 (Ditampilkan di halaman utama)</label>
+    <div class='col-xs-12'>
+      <div class='col-xs-4'>
+        @if($item->image_1)
+          <img src='{{$item->getImageUrl(1)}}' height="100px" />
+        @else
+          belum ada gambar
+        @endif
+      </div>
+      <div class='col-xs-8'>
+        <input type='file' name='file_image_1' class='form-control'/>
+      </div>
+    </div>
+    <span style='color:#f56954'><?= $errors->first('file_image_1'); ?></span>
+  </div>
+
+  <div class='form-group @if($errors->has("file_image_2")) has-error @endif'>
+    <label for='file_image_2'>Gambar 2</label>
+    <div class='col-xs-12'>
+      <div class='col-xs-4'>
+        @if($item->image_2)
+          <img src='{{$item->getImageUrl(2)}}' height='100px' />
+        @else
+          belum ada gambar
+        @endif
+      </div>
+      <div class='col-xs-8'>
+        <input type='file' name='file_image_2' class='form-control'/>
+      </div>
+    </div>
+    <span style='color:#f56954'><?= $errors->first('file_image_2'); ?></span>
+  </div>
+
+  <div class='form-group @if($errors->has("file_image_3")) has-error @endif'>
+    <label for='file_image_3'>Gambar 3</label>
+    <div class='col-xs-12'>
+      <div class='col-xs-4'>
+        @if($item->image_3)
+          <img src='{{$item->getImageUrl(3)}}' height='100px' />
+        @else
+          belum ada gambar
+        @endif
+      </div>
+      <div class='col-xs-8'>
+        <input type='file' name='file_image_3' class='form-control'/>
+      </div>
+    </div>
+    <span style='color:#f56954'><?= $errors->first('file_image_3'); ?></span>
   </div>
   
 @section('script')
