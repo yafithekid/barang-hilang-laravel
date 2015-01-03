@@ -3,7 +3,7 @@
         <div class='col-xs-3' style='padding-top: 8px; padding-bottom: 8px;'>
             <a href='<?=URL::action('ItemController@anyIndex');?>' style="font-family: 'Kaushan Script', cursive; font-size: 20px; color:white;">
                 <?= HTML::image('img/logo.png','logo',['height'=>48]); ?>
-                Barang Hilang</a>
+                Lost n Found</a>
         </div>
         <div class='col-xs-7'>
             <div class='col-xs-12' >
