@@ -42,6 +42,13 @@ Route::group(['prefix' => '/item'],function(){
 	
 });
 
+Route::group(['prefix' => '/user'],function(){
+	Route::group(['before' => 'auth-login'],function(){
+		Route::get('/{id}/update',['uses' => 'UserController@getUpdate']);
+		Route::post('/{id}/update',['uses' => 'UserController@postUpdate']);
+	});
+});
+
 Route::get('/register',['as'=>'register','uses' => 'HomeController@getRegister']);
 Route::post('/register',['uses' => 'HomeController@postRegister']);
 Route::post('/login',['as'=>'login','uses' => 'HomeController@postLogin']);

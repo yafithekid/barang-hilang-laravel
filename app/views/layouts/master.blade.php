@@ -80,7 +80,7 @@
                         </form>
                     @else
                         <center>
-                            <h4><?= Auth::user()->fullname;?></h4>
+                            <h4><?= Auth::user()->fullname;?><a href='{{URL::action('UserController@getUpdate',['id'=>Auth::user()->id])}}'><i class='fa fa-pencil'></i></a></h4>
                             <img src='{{Auth::user()->getImageUrl()}}' class='img-circle' width='100px' height="100px" /><br><br>
                             <a href='<?=URL::action('HomeController@getLogout');?>' class='btn btn-warning' style='color:white'>Logout</a><br><br>
                             <a href='{{URL::action('ItemController@anyMine')}}' style='color:#3c8dbc' >Lihat barang saya</a>
