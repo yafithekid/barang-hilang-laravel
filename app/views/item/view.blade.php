@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('main-content')
 <section class='content-header'>
-	<h1><?= ($item->type == Item::LOST)?'Hilang':'Ditemukan';?>: <?=$item->name;?></h1>
+	<h1>@if ($item->finished) [SELESAI] @endif <?= ($item->type == Item::LOST)?'Hilang':'Ditemukan';?>: <?=$item->name;?></h1>
 </section>
 <section class='content'>
 	<h4>Dilaporkan oleh {{$item->user->fullname}} pada {{ $item->created_at }}</h4>

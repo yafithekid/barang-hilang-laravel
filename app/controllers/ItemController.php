@@ -200,4 +200,11 @@ class ItemController extends \BaseController {
 		}
 		return Redirect::route('item.mine');
 	}
+
+	public function anyDelete($id){
+		$item = Item::findOrFail($id);
+		$item->delete();
+		Session::flash('global-success','Barang berhasil dihapus');
+		return Redirect::action('ItemController@anyMine');
+	}
 }

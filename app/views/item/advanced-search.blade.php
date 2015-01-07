@@ -83,7 +83,7 @@
   });
   var circle = new google.maps.Circle({
       map: map,
-      radius: {{Input::get('rad',Item::DEFAULT_RAD)}},
+      radius: {{Input::get('rad',Item::DEFAULT_RAD * 3000)}},
       editable: true,
     });
   circle.bindTo('center', marker, 'position');
